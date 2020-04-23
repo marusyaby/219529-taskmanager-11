@@ -1,3 +1,8 @@
+const RenderPosition = {
+  AFTERBEGIN: `afterbegin`,
+  BEFOREEND: `beforeend`,
+};
+
 const formatDate = (date) =>
   date.toLocaleString(`en-GB`, {
     day: `numeric`,
@@ -11,7 +16,28 @@ const formatTime = (date) =>
     minute: `numeric`
   });
 
+const createElement = (template) => {
+  const newElement = document.createElement(`div`);
+  newElement.innerHTML = template;
+
+  return newElement.firstElementChild;
+};
+
+const render = (container, element, place = `beforeend`) => {
+  switch (place) {
+    case RenderPosition.AFTERBEGIN:
+      container.prepend(element);
+      break;
+    case RenderPosition.BEFOREEND:
+      container.append(element);
+      break;
+  }
+};
+
 export {
+  RenderPosition,
   formatDate,
   formatTime,
+  createElement,
+  render,
 };

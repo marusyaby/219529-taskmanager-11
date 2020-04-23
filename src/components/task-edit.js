@@ -5,7 +5,8 @@ import {
 
 import {
   formatDate,
-  formatTime
+  formatTime,
+  createElement,
 } from './utils.js';
 
 const createColorsMarkup = (colors, currentColor) => {
@@ -87,7 +88,7 @@ const createTaskEditTemplate = (task) => {
             <div class="card__details">
               <div class="card__dates">
                 <button class="card__date-deadline-toggle" type="button">
-                  date: <span class="card__date-status">yes</span>
+                  date: <span class="card__date-status">${isDueDateSet ? `yes` : `no`}</span>
                 </button>
 
                 <fieldset class="card__date-deadline">
@@ -103,7 +104,7 @@ const createTaskEditTemplate = (task) => {
                 </fieldset>
 
                 <button class="card__repeat-toggle" type="button">
-                  repeat:<span class="card__repeat-status">yes</span>
+                  repeat:<span class="card__repeat-status">${isRepeatedTask ? `yes` : `no`}</span>
                 </button>
 
                 <fieldset class="card__repeat-days">
@@ -132,6 +133,24 @@ const createTaskEditTemplate = (task) => {
   );
 };
 
-export {
-  createTaskEditTemplate,
-};
+export default class TaskEdit {
+  constructor(task) {
+    this._task = task;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createTaskEditTemplate(this._task);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
