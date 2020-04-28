@@ -45,7 +45,7 @@ const renderTask = (taskListElement, task) => {
   const onEditFormSubmit = (evt) => {
     evt.preventDefault();
     replaceEditToTask();
-    document.removeEventListener(`keydown`, onEscKeyDown)
+    document.removeEventListener(`keydown`, onEscKeyDown);
   };
 
   const taskComponent = new TaskComponent(task);
