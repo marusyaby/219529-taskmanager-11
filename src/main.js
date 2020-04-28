@@ -42,19 +42,17 @@ const renderTask = (taskListElement, task) => {
     document.addEventListener(`keydown`, onEscKeyDown);
   };
 
-  const onEditFormSubmit = (evt) => {
+  const onFormSubmit = (evt) => {
     evt.preventDefault();
     replaceEditToTask();
     document.removeEventListener(`keydown`, onEscKeyDown);
   };
 
   const taskComponent = new TaskComponent(task);
-  const editButton = taskComponent.getElement().querySelector(`.card__btn--edit`);
-  editButton.addEventListener(`click`, onEditButtonClick);
+  taskComponent.setEditButtonClickHandler(onEditButtonClick);
 
   const taskEditComponent = new TaskEditComponent(task);
-  const editForm = taskEditComponent.getElement().querySelector(`form`);
-  editForm.addEventListener(`submit`, onEditFormSubmit);
+  taskEditComponent.setSubmitHandler(onFormSubmit);
 
   render(taskListElement, taskComponent);
 };
@@ -97,8 +95,7 @@ const renderBoard = (boardComponent, tasks) => {
     render(boardComponent.getElement(), loadMoreButtonComponent);
   }
 
-  loadMoreButtonComponent.getElement().
-    addEventListener(`click`, onLoadMoreButtonClick);
+  loadMoreButtonComponent.setClickHandler(onLoadMoreButtonClick);
 };
 
 const siteMainElement = document.querySelector(`.main`);
