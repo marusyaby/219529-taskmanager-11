@@ -1,7 +1,7 @@
 import {
   formatDate,
   formatTime,
-} from './utils.js';
+} from '../utils/format.js';
 import AbstractComponent from './abstract-component.js';
 
 
