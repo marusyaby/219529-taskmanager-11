@@ -7,7 +7,7 @@ import {
   formatDate,
   formatTime,
 } from '../utils/format.js';
-import AbstractComponent from './abstract-component.js';
+import Abstract from './abstract.js';
 
 const createColorsMarkup = (colors, currentColor) => {
   return colors.map((color, index) => {
@@ -133,7 +133,7 @@ const createTaskEditTemplate = (task) => {
   );
 };
 
-export default class TaskEdit extends AbstractComponent {
+export default class TaskEdit extends Abstract {
   constructor(task) {
     super();
     this._task = task;
