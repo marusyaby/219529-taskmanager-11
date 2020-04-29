@@ -5,9 +5,10 @@ import NoTasksComponent from '../components/no-tasks.js';
 import SortComponent from '../components/sort.js';
 import TasksComponent from '../components/tasks.js';
 import LoadMoreButtonComponent from '../components/load-more-button.js';
+import {SortType} from '../components/sort';
 
 const TASKS_COUNT = {
-  TOTAL: 26,
+  TOTAL: 20,
   ON_START: 8,
   BY_BUTTON: 8,
 };
@@ -50,7 +51,33 @@ const renderTask = (taskListElement, task) => {
   render(taskListElement, taskComponent);
 };
 
-export default class BoardController {
+const renderTasks = (taskListElement, tasks) => {
+  tasks.forEach((task) => {
+    renderTask(taskListElement, task);
+  });
+};
+
+const getSortedTasks = (tasks, sortType) => {
+  let sortedTasks = [];
+  const showingTasks = tasks.slice();
+
+  switch (sortType) {
+    case SortType.DATE_UP:
+      sortedTasks = showingTasks.sort((a, b) => a.dueDate - b.dueDate);
+      break;
+    case SortType.DATE_DOWN:
+      sortedTasks = showingTasks.sort((a, b) => b.dueDate - a.dueDate);
+      break;
+    case SortType.DEFAULT:
+      sortedTasks = showingTasks;
+      break;
+  }
+
+  return sortedTasks;
+};
+
+
+export default class Board {
   constructor(container) {
     this._container = container;
 
@@ -62,8 +89,30 @@ export default class BoardController {
 
   render(tasks) {
     const container = this._container.getElement();
-
+    const taskListElement = this._tasksComponent.getElement();
     const isAllTasksArchived = tasks.every((task) => task.isArchive);
+
+    let renderedTasksCount = TASKS_COUNT.ON_START;
+    let sortedTasks = getSortedTasks(tasks, SortType.DEFAULT);
+
+    const renderLoadMoreButton = () => {
+      const onLoadMoreButtonClick = () => {
+        const prevTasksCount = renderedTasksCount;
+        renderedTasksCount += TASKS_COUNT.BY_BUTTON;
+
+        renderTasks(taskListElement, sortedTasks.slice(prevTasksCount, renderedTasksCount));
+
+        if (renderedTasksCount >= tasks.length) {
+          remove(this._loadMoreButtonComponent);
+        }
+      };
+
+      if (tasks.length > TASKS_COUNT.ON_START) {
+        render(container, this._loadMoreButtonComponent);
+      }
+
+      this._loadMoreButtonComponent.setClickHandler(onLoadMoreButtonClick);
+    };
 
     if (isAllTasksArchived || tasks.length === 0) {
       render(container, this._noTasksComponent);
@@ -73,33 +122,17 @@ export default class BoardController {
     render(container, this._sortComponent);
     render(container, this._tasksComponent);
 
-    const taskListElement = container
-      .querySelector(`.board__tasks`);
-    let renderedTasksCount = TASKS_COUNT.ON_START;
+    renderTasks(taskListElement, sortedTasks.slice(0, renderedTasksCount));
+    renderLoadMoreButton();
 
-    const renderTasks = (from, to) => {
-      tasks.slice(from, to).forEach((task) =>
-        renderTask(taskListElement, task));
+    const onSortTypeChange = (sortType) => {
+      sortedTasks = getSortedTasks(tasks, sortType);
+      taskListElement.innerHTML = ``;
+
+      renderTasks(taskListElement, sortedTasks.slice(0, renderedTasksCount));
     };
 
-    const onLoadMoreButtonClick = () => {
-      const prevTasksCount = renderedTasksCount;
-      renderedTasksCount += TASKS_COUNT.BY_BUTTON;
-
-      renderTasks(prevTasksCount, renderedTasksCount);
-
-      if (renderedTasksCount >= tasks.length) {
-        remove(this._loadMoreButtonComponent);
-      }
-    };
-
-    renderTasks(0, renderedTasksCount);
-
-    if (tasks.length > TASKS_COUNT.ON_START) {
-      render(container, this._loadMoreButtonComponent);
-    }
-
-    this._loadMoreButtonComponent.setClickHandler(onLoadMoreButtonClick);
+    this._sortComponent.setSortTypeChangeHandler(onSortTypeChange);
   }
 }
 

@@ -1,4 +1,4 @@
-import Abstract from './abstract.js';
+import AbstractComponent from './abstract.js';
 
 const getFilters = (filterNames, tasksArray) => {
   const filter = {
@@ -73,7 +73,7 @@ const createFilterTemplate = (filters) => {
   );
 };
 
-export default class Filter extends Abstract {
+export default class Filter extends AbstractComponent {
   constructor(filters) {
     super();
     this._filters = filters;

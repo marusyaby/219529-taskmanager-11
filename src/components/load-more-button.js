@@ -1,4 +1,4 @@
-import Abstract from './abstract.js';
+import AbstractComponent from './abstract.js';
 
 const createLoadMoreButtonTemplate = () => {
   return (
@@ -6,7 +6,7 @@ const createLoadMoreButtonTemplate = () => {
   );
 };
 
-export default class LoadMoreButton extends Abstract {
+export default class LoadMoreButton extends AbstractComponent {
   getTemplate() {
     return createLoadMoreButtonTemplate();
   }

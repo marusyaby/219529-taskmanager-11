@@ -2,7 +2,7 @@ import {
   formatDate,
   formatTime,
 } from '../utils/format.js';
-import Abstract from './abstract.js';
+import AbstractComponent from './abstract.js';
 
 
 const createTaskTemplate = (task) => {
@@ -67,7 +67,7 @@ const createTaskTemplate = (task) => {
   );
 };
 
-export default class Task extends Abstract {
+export default class Task extends AbstractComponent {
   constructor(task) {
     super();
     this._task = task;
