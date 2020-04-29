@@ -50,7 +50,7 @@ const renderTask = (taskListElement, task) => {
   render(taskListElement, taskComponent);
 };
 
-export default class BoardController {
+export default class Board {
   constructor(container) {
     this._container = container;
 
