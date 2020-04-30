@@ -107,6 +107,8 @@ export default class Board {
         }
       };
 
+      remove(this._loadMoreButtonComponent);
+
       if (tasks.length > TASKS_COUNT.ON_START) {
         render(container, this._loadMoreButtonComponent);
       }
@@ -126,10 +128,12 @@ export default class Board {
     renderLoadMoreButton();
 
     const onSortTypeChange = (sortType) => {
+      renderedTasksCount = TASKS_COUNT.ON_START;
       sortedTasks = getSortedTasks(tasks, sortType);
       taskListElement.innerHTML = ``;
 
       renderTasks(taskListElement, sortedTasks.slice(0, renderedTasksCount));
+      renderLoadMoreButton();
     };
 
     this._sortComponent.setSortTypeChangeHandler(onSortTypeChange);
