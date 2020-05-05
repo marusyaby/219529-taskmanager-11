@@ -93,7 +93,7 @@ export default class Board {
     const isAllTasksArchived = tasks.every((task) => task.isArchive);
 
     let renderedTasksCount = TASKS_COUNT.ON_START;
-    let sortedTasks = getSortedTasks(tasks, SortType.DEFAULT);
+    let sortedTasks = getSortedTasks(tasks, this._sortComponent.getSortType());
 
     const renderLoadMoreButton = () => {
       const onLoadMoreButtonClick = () => {
@@ -124,7 +124,7 @@ export default class Board {
     render(container, this._sortComponent);
     render(container, this._tasksComponent);
 
-    renderTasks(taskListElement, sortedTasks.slice(0, renderedTasksCount));
+    renderTasks(taskListElement, tasks.slice(0, renderedTasksCount));
     renderLoadMoreButton();
 
     const onSortTypeChange = (sortType) => {
