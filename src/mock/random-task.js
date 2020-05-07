@@ -50,8 +50,8 @@ const getRandomTask = () => {
   const isRepeated = isDueDateSet ? false : getRandomBoolean();
 
   return {
-    isDueDateSet,
-    isRepeated,
+    // isDueDateSet,
+    // isRepeated,
     description: getRandomArrayItem(TASK_DESCRIPTIONS),
     dueDate: isDueDateSet ? getRandomDate() : null,
     color: getRandomArrayItem(COLORS),
